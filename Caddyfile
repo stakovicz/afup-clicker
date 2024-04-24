@@ -7,7 +7,7 @@
 
 {$CADDY_EXTRA_CONFIG}
 
-{$SERVER_NAME:localhost} {
+:80 {
 	log {
 		format filter {
 			# Defaults to json while waiting for https://github.com/caddyserver/caddy/pull/5980
