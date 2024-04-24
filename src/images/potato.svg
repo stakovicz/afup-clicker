@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>potato</title>
+    <g id="potato" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M376.800665,339.357337 C435.007816,429.332653 285.607289,486.698937 222.002718,475.639945 C158.398147,464.580952 156.49698,376.58984 132.682209,304.27017 C108.867438,231.950501 132.155055,182.759268 168.110537,131.828354 C204.066019,80.897439 259.669255,17.489849 322.021645,41.0795311 C349.787182,51.5840234 384.032528,74.9306417 376.800665,171.736748 C368.51835,282.604259 351.281853,299.910927 376.800665,339.357337 Z" id="Path-3" stroke="#3B2C1E" stroke-width="13.5" fill="#A37B57"></path>
+        <path d="M256.5,119.781235 C250.481096,135.415302 256.377072,140.982425 274.187927,136.482603" id="Path-4" stroke="#3B2C1E" stroke-width="13.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M292.5,274.74675 C300.203776,256.05421 311.094922,250.90754 319.595366,250.90754" id="Path-5" stroke="#3B2C1E" stroke-width="13.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M179.601856,242.669772 C171.797558,263.766623 179.302976,267.745123 202.11811,254.605273" id="Path-6" stroke="#3B2C1E" stroke-width="13.5" stroke-linecap="round" stroke-linejoin="round" transform="translate(189.3681, 252.4198) scale(1, -1) translate(-189.3681, -252.4198)"></path>
+        <path d="M231.660397,416.060723 C211.101838,416.060723 218.62158,407.028738 254.219624,388.964768" id="Path-7" stroke="#3B2C1E" stroke-width="13.5" stroke-linecap="round" stroke-linejoin="round"></path>
+    </g>
+</svg>

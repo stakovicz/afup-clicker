@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mercure test</title>
+</head>
+<body>
+
+
+<div id="bar">
+    <div id="potato">
+        <div id="score-potato" class="score">-</div>
+        <img src="images/potato.svg" alt="">
+    </div>
+    <div class="separator"></div>
+    <div id="cheese">
+        <div id="score-cheese" class="score">-</div>
+        <img src="images/cheese.svg" alt="">
+    </div>
+</div>
+<div id="winner"></div>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+
+    }
+    #bar {
+        width: 100%;
+        display: flex;
+    }
+    .separator {
+        border-right: 10px dashed #333;
+    }
+    #potato, #cheese {
+        width: 50%;
+        background-repeat: no-repeat;
+        transition: width 0.2s ease-in-out;
+    }
+
+    .scores img {
+        width: 50px;
+        margin-right: 10px;
+    }
+    .score {
+        font-size: 50px;
+        line-height: 1;
+        font-weight: bold;
+        min-width: 2em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #winner {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #winner img {
+        width: 70%;
+    }
+
+    /* animation */
+    .near img {
+        animation: shake 0.15s infinite;
+    }
+    @keyframes shake {
+        0% { transform: translate(0, 0) rotate(0deg); }
+        25% { transform: translate(5px, 5px) rotate(5deg); }
+        50% { transform: translate(0, 0) rotate(0eg); }
+        75% { transform: translate(-5px, 5px) rotate(-5deg); }
+        100% { transform: translate(0, 0) rotate(0deg); }
+    }
+    #winner img {
+        max-width: 50%;
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
+        transform-origin: bottom;
+        animation-name: bounce;
+        animation-timing-function: cubic-bezier(0.280, 0.840, 0.420, 1);
+    }
+
+    @keyframes bounce {
+        0%   { transform: scale(1,1)      translateY(0); }
+        10%  { transform: scale(1.1,.9)   translateY(0); }
+        30%  { transform: scale(.9,1.1)   translateY(-100px); }
+        50%  { transform: scale(1.05,.95) translateY(0); }
+        57%  { transform: scale(1,1)      translateY(-7px); }
+        64%  { transform: scale(1,1)      translateY(0); }
+        100% { transform: scale(1,1)      translateY(0); }
+    }
+</style>
+<script>
+    const count = 10;
+    const $scorePotato = document.getElementById('score-potato');
+    const $scoreCheese = document.getElementById('score-cheese');
+    const $potato = document.getElementById('potato');
+    const $cheese = document.getElementById('cheese');
+
+
+    const jwt = "eyJhbGciOiJIUzI1NiJ9.eyJtZXJjdXJlIjp7InB1Ymxpc2giOlsiKiJdLCJzdWJzY3JpYmUiOlsiKiJdfX0.9oYBowhbaaqGrJmsiToEbpWPBk4Wq9ceCxGNAB793Wg";
+    const hub = 'https://localhost/.well-known/mercure?authorization='+jwt;
+
+    let score = 0;
+
+    const url = new URL(hub);
+    url.searchParams.append('topic', 'https://localhost/game');
+    const eventSource = new EventSource(url);
+
+    // The callback will be called every time an update is published
+    eventSource.onmessage = e => {
+        e.data === 'cheese' ? score++ : score--;
+
+        const scorePotato = (count - score);
+        const scoreCheese = (count + score);
+
+        $scorePotato.innerText = scorePotato;
+        $scoreCheese.innerText = scoreCheese;
+
+        $potato.style.width = scorePotato + "%";
+        $cheese.style.width = scoreCheese + "%";
+
+        publish(score);
+
+        $potato.classList.remove('near');
+        $cheese.classList.remove('near');
+        const near = count - 10;
+        if (score <= -near) {
+            $potato.classList.add('near');
+        }
+        if (score >= near) {
+            $cheese.classList.add('near');
+        }
+
+        // winner ?
+        if (score <= -count) {
+            celebrate('potato');
+        }
+        if (score >= count) {
+            celebrate('cheese');
+        }
+    }
+
+
+    async function publish(score) {
+        const body = new URLSearchParams({
+            data: score,
+        })
+
+        body.append('topic', 'https://localhost/command')
+
+        const opt = {method: 'POST', body}
+
+        try {
+            const resp = await fetch(hub, opt)
+            if (!resp.ok) throw new Error(resp.statusText)
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+    function celebrate(who)
+    {
+        const $img = document.createElement('img');
+        $img.src = 'images/'+who+'.svg';
+
+        const $winner = document.getElementById('winner');
+        $winner.append($img);
+        $winner.style.backgroundColor = '#FFF';
+
+        const end = Date.now() + 15 * 1000;
+        const colors = ["#FFFFFF", "#36a7df"];
+
+        (function frame() {
+            confetti({
+                particleCount: 2,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: colors,
+                scalar: 2,
+                shapes: ["star"],
+            });
+
+            confetti({
+                particleCount: 2,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: colors,
+                scalar: 2,
+                shapes: ["star"],
+            });
+
+            if (Date.now() < end) {
+                requestAnimationFrame(frame);
+            }
+        })();
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
+<script>
+</script>
+</body>
+</html>

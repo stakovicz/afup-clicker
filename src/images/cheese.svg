@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>cheese</title>
+    <g id="cheese" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linejoin="round">
+        <path d="M20,153.670132 C20,153.670132 28.7132745,213.113421 46.1398235,332 C320.783295,320.280718 458.223435,312.418315 458.460245,308.412791 C461.416959,258.401303 458.067748,193.814253 448.412614,114.651639 C162.804205,140.663968 20,153.670132 20,153.670132 Z" id="Path-2" stroke="#4B3905" stroke-width="13.5" fill="#FEBF10"></path>
+        <path d="M20,153.077869 C20,153.077869 259.063918,39 259.063918,39 C376.910563,70.0318691 376.910563,70.0318691 447.491803,114.180042 C447.491803,114.180042 20,153.077869 20,153.077869 Z" id="Path" stroke="#462905" stroke-width="13.5" fill="#FE9610"></path>
+    </g>
+</svg>

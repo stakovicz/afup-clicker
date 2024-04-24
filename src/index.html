@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mercure test</title>
+</head>
+<body>
+<h1>Score: <span id="score">-</span></h1>
+<div class="buttons">
+    <button onclick="publish('potato')" id="potato">
+        <img src="images/potato.svg" alt="">
+    </button>
+    <button onclick="publish('cheese')" id="cheese">
+        <img src="images/cheese.svg" alt="">
+    </button>
+</div>
+<style>
+    .buttons {
+        display: flex;
+
+    }
+    button {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        background: transparent;
+        border: none;
+    }
+    button:active {
+        scale: 0.96;
+    }
+    button:hover {
+        filter: brightness(0.7);
+    }
+</style>
+<script>
+    const $score = document.getElementById('score');
+    const jwt = "eyJhbGciOiJIUzI1NiJ9.eyJtZXJjdXJlIjp7InB1Ymxpc2giOlsiKiJdLCJzdWJzY3JpYmUiOlsiKiJdfX0.9oYBowhbaaqGrJmsiToEbpWPBk4Wq9ceCxGNAB793Wg";
+    const hub = 'https://localhost/.well-known/mercure?authorization='+jwt;
+
+    const searchParams = new URLSearchParams(window.location.search);
+    const team = searchParams.get('team');
+    if (team === 'potato') {
+        document.getElementById('cheese').remove();
+    }
+    if (team === 'cheese') {
+        document.getElementById('potato').remove();
+    }
+
+    const url = new URL(hub);
+    url.searchParams.append('topic', 'https://localhost/command');
+
+    const eventSource = new EventSource(url);
+
+    // The callback will be called every time an update is published
+    eventSource.onmessage = e => {
+        console.log(e)
+        $score.innerText = e.data;
+    }
+    async function publish(topic) {
+        const body = new URLSearchParams({
+            data: topic,
+        })
+
+        body.append('topic', 'https://localhost/game')
+
+        const opt = {method: 'POST', body}
+        try {
+            const resp = await fetch(hub, opt)
+            if (!resp.ok) throw new Error(resp.statusText)
+        } catch (e) {
+            console.error(e)
+        }
+    }
+</script>
+</body>
+</html>

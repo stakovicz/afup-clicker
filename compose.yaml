@@ -1,0 +1,24 @@
+services:
+  mercure:
+    image: dunglas/mercure
+    restart: unless-stopped
+    environment:
+
+      MERCURE_PUBLISHER_JWT_KEY: '1147c58e-8de5-47d3-bca4-f16137741034'
+      MERCURE_SUBSCRIBER_JWT_KEY: '1147c58e-8de5-47d3-bca4-f16137741034'
+      CORS_ALLOWED_ORIGINS: '*'
+      DEBUG: 1
+
+    command: /usr/bin/caddy run --config /etc/caddy/Caddyfile
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - mercure_data:/data
+      - mercure_config:/config
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./src:/srv
+
+volumes:
+  mercure_data:
+  mercure_config:
