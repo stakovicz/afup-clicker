@@ -1,10 +1,10 @@
 FROM dunglas/mercure
 
-ENV MERCURE_PUBLISHER_JWT_KEY  = '1147c58e-8de5-47d3-bca4-f16137741034'
-ENV MERCURE_SUBSCRIBER_JWT_KEY = '1147c58e-8de5-47d3-bca4-f16137741034'
-
 COPY Caddyfile /etc/caddy/Caddyfile
 COPY /src /srv
+
+RUN sed -i 's/0\.0\.0\.0/0.0.0.0:{$PORT}/' /etc/Caddyfile
+RUN sed -e '$a tls off' /etc/Caddyfile
 
 CMD ["/usr/bin/caddy", "run", "--config", "/etc/caddy/Caddyfile"]
 
