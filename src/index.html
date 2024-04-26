@@ -39,7 +39,7 @@
 <script>
     const $score = document.getElementById('score');
     const jwt = "eyJhbGciOiJIUzI1NiJ9.eyJtZXJjdXJlIjp7InB1Ymxpc2giOlsiKiJdLCJzdWJzY3JpYmUiOlsiKiJdfX0.9oYBowhbaaqGrJmsiToEbpWPBk4Wq9ceCxGNAB793Wg";
-    const hub = 'https://localhost/.well-known/mercure?authorization='+jwt;
+    const hub = '/.well-known/mercure?authorization='+jwt;
 
     const searchParams = new URLSearchParams(window.location.search);
     const team = searchParams.get('team');
