@@ -2,8 +2,8 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Mercure test</title>
 </head>
 <body>
@@ -17,9 +17,11 @@
     </button>
 </div>
 <style>
+    * {
+        touch-action: pan-x pan-y;
+    }
     .buttons {
         display: flex;
-
     }
     button {
         padding: 0;
@@ -27,7 +29,6 @@
         width: 100%;
         background: transparent;
         border: none;
-        touch-action: manipulation;
     }
     button:active {
         scale: 0.96;
@@ -39,7 +40,7 @@
 <script>
     const $score = document.getElementById('score');
     const jwt = "eyJhbGciOiJIUzI1NiJ9.eyJtZXJjdXJlIjp7InB1Ymxpc2giOlsiKiJdLCJzdWJzY3JpYmUiOlsiKiJdfX0.9oYBowhbaaqGrJmsiToEbpWPBk4Wq9ceCxGNAB793Wg";
-    const hub = 'https://afup-clicker-6wjwyaecmq-od.a.run.app/.well-known/mercure?authorization='+jwt;
+    const hub = window.location.schema+'://'+window.location.hostname+'/.well-known/mercure?authorization='+jwt;
 
     const searchParams = new URLSearchParams(window.location.search);
     const team = searchParams.get('team');
