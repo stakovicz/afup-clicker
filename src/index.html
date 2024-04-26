@@ -18,7 +18,7 @@
 </div>
 <style>
     * {
-        touch-action: pan-x pan-y;
+        touch-action: none;
     }
     .buttons {
         display: flex;
@@ -40,7 +40,7 @@
 <script>
     const $score = document.getElementById('score');
     const jwt = "eyJhbGciOiJIUzI1NiJ9.eyJtZXJjdXJlIjp7InB1Ymxpc2giOlsiKiJdLCJzdWJzY3JpYmUiOlsiKiJdfX0.9oYBowhbaaqGrJmsiToEbpWPBk4Wq9ceCxGNAB793Wg";
-    const hub = window.location.schema+'://'+window.location.hostname+'/.well-known/mercure?authorization='+jwt;
+    const hub = '//'+window.location.hostname+'/.well-known/mercure?authorization='+jwt;
 
     const searchParams = new URLSearchParams(window.location.search);
     const team = searchParams.get('team');
