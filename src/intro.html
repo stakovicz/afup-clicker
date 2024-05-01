@@ -54,6 +54,20 @@
     }
 </style>
 <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@gh-pages/qrcode.min.js"></script>
-<script type="module" src="score.js"></script>
+<script>
+    const length = 512;
+    var qrcodePotato = new QRCode("qrcode-potato", {
+        width: length,
+        height: length,
+    });
+    qrcodePotato.makeCode('https://'+window.location.hostname+'/?team=potato');
+
+    var qrcodeCheese = new QRCode("qrcode-cheese", {
+        width: length,
+        height: length,
+    });
+    qrcodeCheese.makeCode('https://'+window.location.hostname+'/?team=cheese');
+
+</script>
 </body>
 </html>
