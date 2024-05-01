@@ -2,10 +2,8 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Mercure test</title>
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Score</title>
 </head>
 <body>
 
@@ -26,7 +24,6 @@
 <style>
     body {
         font-family: Arial, sans-serif;
-
     }
     #bar {
         width: 100%;
@@ -76,7 +73,7 @@
     @keyframes shake {
         0% { transform: translate(0, 0) rotate(0deg); }
         25% { transform: translate(5px, 5px) rotate(5deg); }
-        50% { transform: translate(0, 0) rotate(0eg); }
+        50% { transform: translate(0, 0) rotate(0); }
         75% { transform: translate(-5px, 5px) rotate(-5deg); }
         100% { transform: translate(0, 0) rotate(0deg); }
     }
@@ -99,116 +96,7 @@
         100% { transform: scale(1,1)      translateY(0); }
     }
 </style>
-<script>
-    const count = 50;
-    const $scorePotato = document.getElementById('score-potato');
-    const $scoreCheese = document.getElementById('score-cheese');
-    const $potato = document.getElementById('potato');
-    const $cheese = document.getElementById('cheese');
-
-
-    const jwt = "eyJhbGciOiJIUzI1NiJ9.eyJtZXJjdXJlIjp7InB1Ymxpc2giOlsiKiJdLCJzdWJzY3JpYmUiOlsiKiJdfX0.9oYBowhbaaqGrJmsiToEbpWPBk4Wq9ceCxGNAB793Wg";
-    const hub = 'https://'+window.location.hostname+'/.well-known/mercure?authorization='+jwt;
-
-    let score = 0;
-
-    const url = new URL(hub);
-    url.searchParams.append('topic', 'https://localhost/game');
-    const eventSource = new EventSource(url);
-
-    // The callback will be called every time an update is published
-    eventSource.onmessage = e => {
-        e.data === 'cheese' ? score++ : score--;
-
-        const scorePotato = (count - score);
-        const scoreCheese = (count + score);
-
-        $scorePotato.innerText = scorePotato;
-        $scoreCheese.innerText = scoreCheese;
-
-        $potato.style.width = scorePotato + "%";
-        $cheese.style.width = scoreCheese + "%";
-
-        publish(score);
-
-        $potato.classList.remove('near');
-        $cheese.classList.remove('near');
-        const near = count - 10;
-        if (score <= -near) {
-            $potato.classList.add('near');
-        }
-        if (score >= near) {
-            $cheese.classList.add('near');
-        }
-
-        // winner ?
-        if (score <= -count) {
-            celebrate('potato');
-        }
-        if (score >= count) {
-            celebrate('cheese');
-        }
-    }
-
-
-    async function publish(score) {
-        const body = new URLSearchParams({
-            data: score,
-        })
-
-        body.append('topic', 'https://localhost/command')
-
-        const opt = {method: 'POST', body}
-
-        try {
-            const resp = await fetch(hub, opt)
-            if (!resp.ok) throw new Error(resp.statusText)
-        } catch (e) {
-            console.error(e)
-        }
-    }
-
-    function celebrate(who)
-    {
-        const $img = document.createElement('img');
-        $img.src = 'images/'+who+'.svg';
-
-        const $winner = document.getElementById('winner');
-        $winner.append($img);
-        $winner.style.backgroundColor = '#FFF';
-
-        const end = Date.now() + 15 * 1000;
-        const colors = ["#FFFFFF", "#36a7df"];
-
-        (function frame() {
-            confetti({
-                particleCount: 2,
-                angle: 60,
-                spread: 55,
-                origin: { x: 0 },
-                colors: colors,
-                scalar: 2,
-                shapes: ["star"],
-            });
-
-            confetti({
-                particleCount: 2,
-                angle: 120,
-                spread: 55,
-                origin: { x: 1 },
-                colors: colors,
-                scalar: 2,
-                shapes: ["star"],
-            });
-
-            if (Date.now() < end) {
-                requestAnimationFrame(frame);
-            }
-        })();
-    }
-</script>
 <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
-<script>
-</script>
+<script type="module" src="score.js"></script>
 </body>
 </html>

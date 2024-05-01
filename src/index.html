@@ -2,17 +2,17 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Mercure test</title>
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Jeu</title>
 </head>
 <body>
-<h1>Score: <span id="score">-</span></h1>
+
+
 <div class="buttons">
-    <button onclick="publish('potato')" id="potato">
+    <button id="potato">
         <img src="images/potato.svg" alt="">
     </button>
-    <button onclick="publish('cheese')" id="cheese">
+    <button id="cheese">
         <img src="images/cheese.svg" alt="">
     </button>
 </div>
@@ -20,13 +20,20 @@
     * {
         touch-action: none;
     }
+    body {
+        margin: 0;
+        padding: 0;
+    }
     .buttons {
+        height: 100vh;
         display: flex;
+        align-items: center;
+        justify-content: center;
     }
     button {
         padding: 0;
         margin: 0;
-        width: 100%;
+        width: 150px;
         background: transparent;
         border: none;
     }
@@ -37,45 +44,7 @@
         filter: brightness(0.7);
     }
 </style>
-<script>
-    const $score = document.getElementById('score');
-    const jwt = "eyJhbGciOiJIUzI1NiJ9.eyJtZXJjdXJlIjp7InB1Ymxpc2giOlsiKiJdLCJzdWJzY3JpYmUiOlsiKiJdfX0.9oYBowhbaaqGrJmsiToEbpWPBk4Wq9ceCxGNAB793Wg";
-    const hub = 'https://'+window.location.hostname+'/.well-known/mercure?authorization='+jwt;
-
-    const searchParams = new URLSearchParams(window.location.search);
-    const team = searchParams.get('team');
-    if (team === 'potato') {
-        document.getElementById('cheese').remove();
-    }
-    if (team === 'cheese') {
-        document.getElementById('potato').remove();
-    }
-
-    const url = new URL(hub);
-    url.searchParams.append('topic', 'https://localhost/command');
-
-    const eventSource = new EventSource(url);
-
-    // The callback will be called every time an update is published
-    eventSource.onmessage = e => {
-        console.log(e)
-        $score.innerText = e.data;
-    }
-    async function publish(topic) {
-        const body = new URLSearchParams({
-            data: topic,
-        })
-
-        body.append('topic', 'https://localhost/game')
-
-        const opt = {method: 'POST', body}
-        try {
-            const resp = await fetch(hub, opt)
-            if (!resp.ok) throw new Error(resp.statusText)
-        } catch (e) {
-            console.error(e)
-        }
-    }
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
+<script type="module" src="game.js"></script>
 </body>
 </html>
