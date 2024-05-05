@@ -4,7 +4,6 @@ if ("wakeLock" in navigator) {
     wakeLock = await navigator.wakeLock.request("screen");
 }
 
-
 const jwt = "eyJhbGciOiJIUzI1NiJ9.eyJtZXJjdXJlIjp7InB1Ymxpc2giOlsiKiJdLCJzdWJzY3JpYmUiOlsiKiJdfX0.9oYBowhbaaqGrJmsiToEbpWPBk4Wq9ceCxGNAB793Wg";
 const hub = 'https://'+window.location.hostname+'/.well-known/mercure?authorization='+jwt;
 
@@ -12,34 +11,61 @@ const $potato = document.getElementById('potato');
 const $cheese = document.getElementById('cheese');
 
 const searchParams = new URLSearchParams(window.location.search);
-const team = searchParams.get('team');
-if (team === 'potato') {
-    $cheese.remove();
-}
+const team = searchParams.get('team') || 'cheese';
 if (team === 'cheese') {
     $potato.remove();
+} else {
+    $cheese.remove();
 }
 
 const url = new URL(hub);
 url.searchParams.append('topic', 'https://localhost/command');
-
 const eventSource = new EventSource(url);
+
+let step = 1;
 
 // The callback will be called every time an update is published
 eventSource.onmessage = e => {
-    const points = Math.abs(e.data);
+    const data = JSON.parse(e.data);
 
-    if (points >= 50) {
+    // Winner
+    if (data.winner === team) {
         celebrate();
+        return;
+    }
+
+    // Change step
+    if (data.step) {
+        step = data.step;
+    }
+
+    // Game get score
+    if (data[team]) {
+        const points = data[team];
     }
 }
-async function publish(topic) {
+
+if ($potato) {
+    $potato.addEventListener("click", (event) => {
+        event.preventDefault();
+        publish('potato');
+        move(step, $potato);
+    });
+}
+if ($cheese) {
+    $cheese.addEventListener("click", (event) => {
+        event.preventDefault();
+        publish('cheese');
+        move(step, $cheese);
+    });
+}
+
+async function publish(data) {
     const body = new URLSearchParams({
-        data: topic,
+        data: data,
     })
 
     body.append('topic', 'https://localhost/game')
-
     const opt = {method: 'POST', body}
     try {
         const resp = await fetch(hub, opt)
@@ -49,9 +75,22 @@ async function publish(topic) {
     }
 }
 
+function move(step, $element) {
 
-function celebrate()
-{
+    if (step !== 2) {
+        return;
+    }
+
+    $element.style.position = 'absolute';
+
+    const winWidth = window.innerWidth - $element.offsetHeight;
+    const winHeight = window.innerHeight - $element.offsetWidth;
+
+    $element.style.top = (Math.random() * winHeight) + "px";
+    $element.style.left = (Math.random() * winWidth) + "px";
+}
+
+function celebrate()  {
     const end = Date.now() + 15 * 1000;
 
     const colors = ["#9400D3", "#4B0082", "#0000FF", "#00FF00", "#FFFF00", "#FF7F00", "#FF0000"];
@@ -79,17 +118,4 @@ function celebrate()
             requestAnimationFrame(frame);
         }
     })();
-}
-
-if ($potato) {
-    $potato.addEventListener("click", (event) => {
-        event.preventDefault();
-        publish('potato');
-    });
-}
-if ($cheese) {
-    $cheese.addEventListener("click", (event) => {
-        event.preventDefault();
-        publish('cheese');
-    });
 }

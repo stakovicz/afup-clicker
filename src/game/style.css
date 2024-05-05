@@ -1,0 +1,27 @@
+
+* {
+    touch-action: none;
+}
+body {
+    margin: 0;
+    padding: 0;
+}
+.buttons {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+button {
+    padding: 0;
+    margin: 0;
+    width: 150px;
+    background: transparent;
+    border: none;
+}
+button:active {
+    scale: 0.96;
+}
+button:hover {
+    filter: brightness(0.7);
+}

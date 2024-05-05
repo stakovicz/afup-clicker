@@ -7,17 +7,16 @@
     <title>Intro</title>
 </head>
 <body>
-
-<h1>La raclette c'est la vie !</h1>
 <div id="bar">
     <div id="potato">
         <div class="qrcode" id="qrcode-potato"></div>
-        <img src="images/potato.svg" alt="">
+        <img src="../images/potato.svg" alt="">
+        <span></span>
     </div>
-    <div class="separator"></div>
     <div id="cheese">
         <div class="qrcode" id="qrcode-cheese"></div>
-        <img src="images/cheese.svg" alt="">
+        <img src="../images/cheese.svg" alt="">
+        <span></span>
     </div>
 </div>
 
@@ -25,15 +24,10 @@
     body {
         font-family: Arial, sans-serif;
     }
-    h1 {
-        text-align: center;
-    }
     #bar {
+        padding-top:50px;
         width: 100%;
         display: flex;
-    }
-    .separator {
-        border-right: 10px dashed #333;
     }
     #potato, #cheese {
         width: 50%;
@@ -42,14 +36,19 @@
         justify-content: center;
     }
     #potato img, #cheese img {
-        width: 50%;
+        width: 30%;
         margin: auto;
+    }
+    #potato span, #cheese span {
+        display: block;
+        text-align: center;
     }
     .qrcode {
         display: flex;
         justify-content: center;
     }
-    .qrcode img {
+    #potato .qrcode img,
+    #cheese .qrcode img {
         width: 70%;
     }
 </style>
@@ -60,13 +59,23 @@
         width: length,
         height: length,
     });
-    qrcodePotato.makeCode('https://'+window.location.hostname+'/?team=potato');
+    let url  = 'https://'+window.location.hostname+'/game/?team=potato';
+    qrcodePotato.makeCode(url);
+    document.querySelector('#potato span').innerText = url;
 
     var qrcodeCheese = new QRCode("qrcode-cheese", {
         width: length,
         height: length,
     });
-    qrcodeCheese.makeCode('https://'+window.location.hostname+'/?team=cheese');
+    url  = 'https://'+window.location.hostname+'/game/?team=cheese';
+    qrcodeCheese.makeCode(url);
+    document.querySelector('#cheese span').innerText = url;
+
+    document.onkeyup = function(evt) {
+        if (evt.code === 'KeyI') {
+            window.location = '/score/';
+        }
+    };
 
 </script>
 </body>

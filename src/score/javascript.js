@@ -7,18 +7,43 @@ const $cheese = document.getElementById('cheese');
 const jwt = "eyJhbGciOiJIUzI1NiJ9.eyJtZXJjdXJlIjp7InB1Ymxpc2giOlsiKiJdLCJzdWJzY3JpYmUiOlsiKiJdfX0.9oYBowhbaaqGrJmsiToEbpWPBk4Wq9ceCxGNAB793Wg";
 const hub = 'https://'+window.location.hostname+'/.well-known/mercure?authorization='+jwt;
 
-let score = 0;
+let javascript = 0;
+let start = false;
+let step = 1;
 
 const url = new URL(hub);
 url.searchParams.append('topic', 'https://localhost/game');
 const eventSource = new EventSource(url);
 
+document.onkeyup = function(evt) {
+    if (evt.code === 'KeyS') {
+        countdown();
+    }
+
+    if (evt.code === 'Digit1') {
+        step = 1;
+        publish({step});
+    }
+    if (evt.code === 'Digit2') {
+        step = 2;
+        publish({step});
+    }
+
+    if (evt.code === 'KeyI') {
+        window.location = '/intro/';
+    }
+};
+
+
 // The callback will be called every time an update is published
 eventSource.onmessage = e => {
-    e.data === 'cheese' ? score++ : score--;
+    if (!start) {
+        return;
+    }
+    e.data === 'cheese' ? javascript++ : javascript--;
 
-    const scorePotato = (count - score);
-    const scoreCheese = (count + score);
+    const scorePotato = (count - javascript);
+    const scoreCheese = (count + javascript);
 
     $scorePotato.innerText = scorePotato;
     $scoreCheese.innerText = scoreCheese;
@@ -26,37 +51,37 @@ eventSource.onmessage = e => {
     $potato.style.width = scorePotato + "%";
     $cheese.style.width = scoreCheese + "%";
 
-    publish(score);
+    publish({potato: scorePotato, cheese: scoreCheese, step});
 
     $potato.classList.remove('near');
     $cheese.classList.remove('near');
     const near = count - 10;
-    if (score <= -near) {
+    if (javascript <= -near) {
         $potato.classList.add('near');
     }
-    if (score >= near) {
+    if (javascript >= near) {
         $cheese.classList.add('near');
     }
 
     // winner ?
-    if (score <= -count) {
+    if (javascript <= -count) {
+        publish({winner: 'potato'});
         celebrate('potato');
     }
-    if (score >= count) {
+    if (javascript >= count) {
+        publish({winner: 'cheese'});
         celebrate('cheese');
     }
 }
 
 
-async function publish(score) {
+async function publish(data) {
     const body = new URLSearchParams({
-        data: score,
+        data: JSON.stringify(data),
     })
 
     body.append('topic', 'https://localhost/command')
-
     const opt = {method: 'POST', body}
-
     try {
         const resp = await fetch(hub, opt)
         if (!resp.ok) throw new Error(resp.statusText)
@@ -65,10 +90,10 @@ async function publish(score) {
     }
 }
 
-function celebrate(who)
-{
+function celebrate(who)  {
+    start = false;
     const $img = document.createElement('img');
-    $img.src = 'images/'+who+'.svg';
+    $img.src = '../images/'+who+'.svg';
 
     const $winner = document.getElementById('winner');
     $winner.append($img);
@@ -100,4 +125,19 @@ function celebrate(who)
             requestAnimationFrame(frame);
         }
     })();
+}
+
+function countdown() {
+    start = false;
+    document.body.insertAdjacentHTML( 'beforeend', '<div id="countdown">\n' +
+        '    <div>3</div>\n' +
+        '    <div>2</div>\n' +
+        '    <div>1</div>\n' +
+        '</div>' );
+
+    setTimeout(function() {
+        start = true;
+
+        document.getElementById('countdown').remove();
+    }, 4 * 1000);
 }
