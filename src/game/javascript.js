@@ -18,6 +18,21 @@ if (team === 'cheese') {
     $cheese.remove();
 }
 
+publish({hello: team});
+
+/*
+const beforeUnloadHandler = (event) => {
+    publish({bye: team});
+    // Recommended
+    event.preventDefault();
+
+    // Included for legacy support, e.g. Chrome/Edge < 119
+    event.returnValue = false;
+    return false;
+};
+window.addEventListener("beforeunload", beforeUnloadHandler);
+*/
+
 const url = new URL(hub);
 url.searchParams.append('topic', 'https://localhost/command');
 const eventSource = new EventSource(url);
@@ -37,6 +52,15 @@ eventSource.onmessage = e => {
     // Change step
     if (data.step) {
         step = data.step;
+
+
+        $potato.classList.remove('move');
+        $cheese.classList.remove('move');
+
+        if (step === 2) {
+            $potato.classList.add('move');
+            $cheese.classList.add('move');
+        }
     }
 
     // Game get score
@@ -48,25 +72,30 @@ eventSource.onmessage = e => {
 if ($potato) {
     $potato.addEventListener("click", (event) => {
         event.preventDefault();
-        publish('potato');
+        publish({click: 'potato'});
         move(step, $potato);
     });
 }
 if ($cheese) {
     $cheese.addEventListener("click", (event) => {
         event.preventDefault();
-        publish('cheese');
+        publish({click: 'cheese'});
         move(step, $cheese);
     });
 }
 
 async function publish(data) {
     const body = new URLSearchParams({
-        data: data,
+        data: JSON.stringify(data),
     })
 
     body.append('topic', 'https://localhost/game')
-    const opt = {method: 'POST', body}
+    const opt = {
+        method: 'POST',
+        keepalive: true,
+        body
+    };
+
     try {
         const resp = await fetch(hub, opt)
         if (!resp.ok) throw new Error(resp.statusText)
@@ -77,7 +106,7 @@ async function publish(data) {
 
 function move(step, $element) {
 
-    if (step !== 2) {
+    if (step !== 3) {
         return;
     }
 

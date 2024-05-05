@@ -1,6 +1,8 @@
 const count = 50;
 const $scorePotato = document.getElementById('score-potato');
 const $scoreCheese = document.getElementById('score-cheese');
+const $connPotato = document.getElementById('connected-potato');
+const $connCheese = document.getElementById('connected-cheese');
 const $potato = document.getElementById('potato');
 const $cheese = document.getElementById('cheese');
 
@@ -28,6 +30,10 @@ document.onkeyup = function(evt) {
         step = 2;
         publish({step});
     }
+    if (evt.code === 'Digit3') {
+        step = 3;
+        publish({step});
+    }
 
     if (evt.code === 'KeyI') {
         window.location = '/intro/';
@@ -37,10 +43,32 @@ document.onkeyup = function(evt) {
 
 // The callback will be called every time an update is published
 eventSource.onmessage = e => {
+    const data = JSON.parse(e.data);
+
+    if (data.hello) {
+        if (data.hello === 'potato') {
+            $connPotato.innerText = Number($connPotato.innerText) + 1;
+        }
+        if (data.hello === 'cheese') {
+            $connCheese.innerText = Number($connCheese.innerText) + 1;
+        }
+        return;
+    }
+    if (data.bye) {
+        if (data.bye === 'potato') {
+            $connPotato.innerText = Number($connPotato.innerText) - 1;
+        }
+        if (data.bye === 'cheese') {
+            $connCheese.innerText = Number($connCheese.innerText) - 1;
+        }
+        return;
+    }
+
     if (!start) {
         return;
     }
-    e.data === 'cheese' ? javascript++ : javascript--;
+
+    data.click === 'cheese' ? javascript++ : javascript--;
 
     const scorePotato = (count - javascript);
     const scoreCheese = (count + javascript);

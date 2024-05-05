@@ -231,6 +231,7 @@
            y="-629.57776">2024</tspan></text></g></g></svg>
 
 
+
 <style>
     body {
         display: flex;
@@ -239,13 +240,73 @@
         height: 100vh;
         margin: 0;
         padding: 0;
+        overflow: hidden;
+        font-family: Impact, sans-serif;
+    }
+    h1 {
+        text-align: center;
+        font-size: 4rem;
     }
     #logo {
         width: 70%;
     }
+    #countdown {
+        background-color: rgba(255, 255, 255, 0.9);
+        position: absolute;
+        top:0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #countdown div {
+        position: absolute;
+        opacity: 1;
+        animation: switch 1s linear;
+        width: 40%;
+    }
+
+
+    @keyframes switch {
+        0% {
+            opacity: 0;
+            filter: blur(20px);
+            transform: scale(4);
+        }
+
+        20% {
+            opacity: 1;
+            filter: blur(0);
+            transform: scale(1);
+        }
+
+        30% {
+            opacity: 1;
+            filter: blur(0);
+            transform: scale(1.1);
+        }
+
+        40% {
+            opacity: 1;
+            filter: blur(0);
+            transform: scale(1);
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
 </style>
 <script>
     document.onkeyup = function (evt) {
+        if (evt.code === 'KeyS') {
+            document.body.insertAdjacentHTML( 'beforeend', '<div id="countdown">\n' +
+                '<div><h1>La raclette</h1>    <img src="../images/raclette.svg" alt="">' +
+                '</div></div>' );
+        }
         if (evt.code === 'KeyI') {
             window.location = '/intro/';
         }
