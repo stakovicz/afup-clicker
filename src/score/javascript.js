@@ -1,8 +1,6 @@
 const count = 50;
 const $scorePotato = document.getElementById('score-potato');
 const $scoreCheese = document.getElementById('score-cheese');
-const $connPotato = document.getElementById('connected-potato');
-const $connCheese = document.getElementById('connected-cheese');
 const $potato = document.getElementById('potato');
 const $cheese = document.getElementById('cheese');
 
@@ -24,15 +22,15 @@ document.onkeyup = function(evt) {
 
     if (evt.code === 'Digit1') {
         step = 1;
-        publish({step});
+        //publish({step});
     }
     if (evt.code === 'Digit2') {
         step = 2;
-        publish({step});
+        //publish({step});
     }
     if (evt.code === 'Digit3') {
         step = 3;
-        publish({step});
+        //publish({step});
     }
 
     if (evt.code === 'KeyI') {
@@ -155,5 +153,34 @@ function countdown() {
         start = true;
 
         document.getElementById('countdown').remove();
+        publish({step});
     }, 4 * 1000);
 }
+
+
+setInterval(async function() {
+    try {
+        const response = await fetch('https://'+window.location.hostname+'/.well-known/mercure/subscriptions', {
+            method: 'get',
+            headers: new Headers({
+                'Authorization': 'Bearer '+jwt,
+                'Content-Type': 'application/json'
+            })
+        });
+        if (!response.ok) throw new Error(resp.statusText)
+        const subscriptions = await response.json();
+
+        const cheese = subscriptions.subscriptions.filter(function (subscription) {
+            return subscription.topic === "https://localhost/cheese";
+        }).length;
+        document.querySelector('#cheese .connected').innerText = Number(cheese);
+
+        const potato = subscriptions.subscriptions.filter(function (subscription) {
+            return subscription.topic === "https://localhost/potato";
+        }).length;
+        document.querySelector('#potato .connected').innerText = Number(potato);
+
+    } catch (e) {
+        console.error(e)
+    }
+}, 2000);

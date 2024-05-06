@@ -1,0 +1,33 @@
+
+#bar {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#bar > div {
+    width: 33%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#bar > div > div {
+    margin-top: 20px;
+    font-size: 30px;
+    font-weight: bold;
+}
+#bar img {
+    object-fit: contain;
+}
+#url {
+    font-size: 40px;
+}
+#qrcode img {
+    width: 100%;
+}
+#potato img,
+#cheese img {
+    width: 70%;
+}

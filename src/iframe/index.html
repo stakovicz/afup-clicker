@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Start</title>
+</head>
+<body tabindex="1">
+<iframe src="/start/" id="iframe" allowfullscreen></iframe>
+<link href="../common.css" rel="stylesheet" />
+<script>
+    document.onkeyup = function (evt) {
+        if (evt.code === 'KeyF') {
+            const elem = document.getElementById("iframe");
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            }
+        }
+    };
+</script>
+</body>
+</html>

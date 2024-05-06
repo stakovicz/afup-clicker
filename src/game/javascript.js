@@ -1,17 +1,12 @@
 const jwt = "eyJhbGciOiJIUzI1NiJ9.eyJtZXJjdXJlIjp7InB1Ymxpc2giOlsiKiJdLCJzdWJzY3JpYmUiOlsiKiJdfX0.9oYBowhbaaqGrJmsiToEbpWPBk4Wq9ceCxGNAB793Wg";
 const hub = 'https://'+window.location.hostname+'/.well-known/mercure?authorization='+jwt;
 
-const $potato = document.getElementById('potato');
-const $cheese = document.getElementById('cheese');
+const $button = document.getElementById('button');
 
 const searchParams = new URLSearchParams(window.location.search);
 const team = searchParams.get('team') || 'cheese';
-if (team === 'cheese') {
-    $potato.remove();
-} else {
-    $cheese.remove();
-}
-console.log(team)
+$button.innerHTML = '<img src="../images/'+team+'.svg" alt="">';
+
 const url = new URL(hub);
 url.searchParams.append('topic', 'https://localhost/command');
 url.searchParams.append('topic', 'https://localhost/'+team);
@@ -33,13 +28,10 @@ eventSource.onmessage = e => {
     if (data.step) {
         step = data.step;
 
-
-        $potato.classList.remove('move');
-        $cheese.classList.remove('move');
+        $button.classList.remove('move');
 
         if (step === 2) {
-            $potato.classList.add('move');
-            $cheese.classList.add('move');
+            $button.classList.add('move');
         }
     }
 
@@ -49,20 +41,11 @@ eventSource.onmessage = e => {
     }
 }
 
-if ($potato) {
-    $potato.addEventListener("click", (event) => {
-        event.preventDefault();
-        publish({click: 'potato'});
-        move(step, $potato);
-    });
-}
-if ($cheese) {
-    $cheese.addEventListener("click", (event) => {
-        event.preventDefault();
-        publish({click: 'cheese'});
-        move(step, $cheese);
-    });
-}
+$button.addEventListener("click", (event) => {
+    event.preventDefault();
+    publish({click:team});
+    move(step, $button);
+});
 
 async function publish(data) {
     const body = new URLSearchParams({

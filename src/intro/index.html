@@ -7,76 +7,23 @@
     <title>Intro</title>
 </head>
 <body>
-<div id="bar">
-    <div id="potato">
-        <div class="qrcode" id="qrcode-potato"></div>
-        <img src="../images/potato.svg" alt="">
-        <span></span>
+    <div id="bar">
+        <div id="potato">
+            <img src="../images/potato.svg" alt="">
+            <div>-</div>
+        </div>
+        <div>
+            <div class="qrcode" id="qrcode"></div>
+            <div id="url"></div>
+        </div>
+        <div id="cheese">
+            <img src="../images/cheese.svg" alt="">
+            <div>-</div>
+        </div>
     </div>
-    <div id="cheese">
-        <div class="qrcode" id="qrcode-cheese"></div>
-        <img src="../images/cheese.svg" alt="">
-        <span></span>
-    </div>
-</div>
-
-<style>
-    body {
-        font-family: Arial, sans-serif;
-    }
-    #bar {
-        padding-top:50px;
-        width: 100%;
-        display: flex;
-    }
-    #potato, #cheese {
-        width: 50%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-    #potato img, #cheese img {
-        width: 30%;
-        margin: auto;
-    }
-    #potato span, #cheese span {
-        display: block;
-        text-align: center;
-    }
-    .qrcode {
-        display: flex;
-        justify-content: center;
-    }
-    #potato .qrcode img,
-    #cheese .qrcode img {
-        width: 70%;
-    }
-</style>
-<script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@gh-pages/qrcode.min.js"></script>
-<script>
-    const length = 512;
-    var qrcodePotato = new QRCode("qrcode-potato", {
-        width: length,
-        height: length,
-    });
-    let url  = 'https://'+window.location.hostname+'/game/?team=potato';
-    qrcodePotato.makeCode(url);
-    document.querySelector('#potato span').innerText = url;
-
-    var qrcodeCheese = new QRCode("qrcode-cheese", {
-        width: length,
-        height: length,
-    });
-    url  = 'https://'+window.location.hostname+'/game/?team=cheese';
-    qrcodeCheese.makeCode(url);
-    document.querySelector('#cheese span').innerText = url;
-
-    document.onkeyup = function(evt) {
-        if (evt.code === 'KeyI') {
-            window.location = '/score/';
-        }
-    };
-
-</script>
+    <link href="../common.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@gh-pages/qrcode.min.js"></script>
+    <script src="javascript.js"></script>
 </body>
 </html>
