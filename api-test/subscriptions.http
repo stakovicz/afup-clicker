@@ -1,0 +1,5 @@
+GET https://localhost/.well-known/mercure/subscriptions
+Accept: application/ld+json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJtZXJjdXJlIjp7InB1Ymxpc2giOlsiKiJdLCJzdWJzY3JpYmUiOlsiKiJdfX0.9oYBowhbaaqGrJmsiToEbpWPBk4Wq9ceCxGNAB793Wg
+
+###

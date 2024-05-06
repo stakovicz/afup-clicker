@@ -9,7 +9,7 @@ const $cheese = document.getElementById('cheese');
 const jwt = "eyJhbGciOiJIUzI1NiJ9.eyJtZXJjdXJlIjp7InB1Ymxpc2giOlsiKiJdLCJzdWJzY3JpYmUiOlsiKiJdfX0.9oYBowhbaaqGrJmsiToEbpWPBk4Wq9ceCxGNAB793Wg";
 const hub = 'https://'+window.location.hostname+'/.well-known/mercure?authorization='+jwt;
 
-let javascript = 0;
+let score = 0;
 let start = false;
 let step = 1;
 
@@ -45,33 +45,14 @@ document.onkeyup = function(evt) {
 eventSource.onmessage = e => {
     const data = JSON.parse(e.data);
 
-    if (data.hello) {
-        if (data.hello === 'potato') {
-            $connPotato.innerText = Number($connPotato.innerText) + 1;
-        }
-        if (data.hello === 'cheese') {
-            $connCheese.innerText = Number($connCheese.innerText) + 1;
-        }
-        return;
-    }
-    if (data.bye) {
-        if (data.bye === 'potato') {
-            $connPotato.innerText = Number($connPotato.innerText) - 1;
-        }
-        if (data.bye === 'cheese') {
-            $connCheese.innerText = Number($connCheese.innerText) - 1;
-        }
-        return;
-    }
-
     if (!start) {
         return;
     }
 
-    data.click === 'cheese' ? javascript++ : javascript--;
+    data.click === 'cheese' ? score++ : score--;
 
-    const scorePotato = (count - javascript);
-    const scoreCheese = (count + javascript);
+    const scorePotato = (count - score);
+    const scoreCheese = (count + score);
 
     $scorePotato.innerText = scorePotato;
     $scoreCheese.innerText = scoreCheese;
@@ -84,24 +65,23 @@ eventSource.onmessage = e => {
     $potato.classList.remove('near');
     $cheese.classList.remove('near');
     const near = count - 10;
-    if (javascript <= -near) {
+    if (score <= -near) {
         $potato.classList.add('near');
     }
-    if (javascript >= near) {
+    if (score >= near) {
         $cheese.classList.add('near');
     }
 
     // winner ?
-    if (javascript <= -count) {
+    if (score <= -count) {
         publish({winner: 'potato'});
         celebrate('potato');
     }
-    if (javascript >= count) {
+    if (score >= count) {
         publish({winner: 'cheese'});
         celebrate('cheese');
     }
 }
-
 
 async function publish(data) {
     const body = new URLSearchParams({
@@ -128,25 +108,33 @@ function celebrate(who)  {
     $winner.style.backgroundColor = '#FFF';
     const end = Date.now() + 15 * 1000;
 
-    const colors = ["#9400D3", "#4B0082", "#0000FF", "#00FF00", "#FFFF00", "#FF7F00", "#FF0000"];
-
     (function frame() {
         confetti({
             particleCount: 2,
             angle: 60,
             spread: 55,
-            scalar: 2,
+            scalar: 8,
             origin: { x: 0 },
-            colors: colors,
+            shapes: ["image"],
+            shapeOptions: {
+                image: {
+                    src: "../images/raclette.svg",
+                },
+            },
         });
 
         confetti({
             particleCount: 2,
             angle: 120,
             spread: 55,
-            scalar: 2,
+            scalar: 8,
             origin: { x: 1 },
-            colors: colors,
+            shapes: ["image"],
+            shapeOptions: {
+                image: {
+                    src: "../images/raclette.svg",
+                },
+            },
         });
 
         if (Date.now() < end) {
