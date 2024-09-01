@@ -11,6 +11,9 @@ const url = new URL(hub);
 url.searchParams.append('topic', 'https://localhost/command');
 url.searchParams.append('topic', 'https://localhost/'+team);
 const eventSource = new EventSource(url);
+window.addEventListener("unload", (event) => {
+    eventSource.close();
+});
 
 let step = 1;
 

@@ -14,6 +14,9 @@ let step = 1;
 const url = new URL(hub);
 url.searchParams.append('topic', 'https://localhost/game');
 const eventSource = new EventSource(url);
+window.addEventListener("unload", (event) => {
+    eventSource.close();
+});
 
 document.onkeyup = function(evt) {
     if (evt.code === 'KeyS') {
