@@ -4,7 +4,7 @@ var qrcode = new QRCode("qrcode", {
     width: length,
     height: length,
 });
-let url  = 'https://'+window.location.hostname+'/choose/';
+let url  = window.location.origin+'/choose/';
 qrcode.makeCode(url);
 document.querySelector('#url').innerText = url;
 
@@ -16,7 +16,7 @@ document.onkeyup = function(evt) {
 
 setInterval(async function() {
     try {
-        const response = await fetch('https://'+window.location.hostname+'/.well-known/mercure/subscriptions', {
+        const response = await fetch(window.location.origin+'/.well-known/mercure/subscriptions', {
             method: 'get',
             headers: new Headers({
                 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJtZXJjdXJlIjp7InB1Ymxpc2giOlsiKiJdLCJzdWJzY3JpYmUiOlsiKiJdfX0.9oYBowhbaaqGrJmsiToEbpWPBk4Wq9ceCxGNAB793Wg',

@@ -5,7 +5,7 @@ const $potato = document.getElementById('potato');
 const $cheese = document.getElementById('cheese');
 
 const jwt = "eyJhbGciOiJIUzI1NiJ9.eyJtZXJjdXJlIjp7InB1Ymxpc2giOlsiKiJdLCJzdWJzY3JpYmUiOlsiKiJdfX0.9oYBowhbaaqGrJmsiToEbpWPBk4Wq9ceCxGNAB793Wg";
-const hub = 'https://'+window.location.hostname+'/.well-known/mercure?authorization='+jwt;
+const hub = window.location.origin+'/.well-known/mercure?authorization='+jwt;
 
 let score = 0;
 let start = false;
@@ -163,7 +163,7 @@ function countdown() {
 
 setInterval(async function() {
     try {
-        const response = await fetch('https://'+window.location.hostname+'/.well-known/mercure/subscriptions', {
+        const response = await fetch(window.location.origin+'/.well-known/mercure/subscriptions', {
             method: 'get',
             headers: new Headers({
                 'Authorization': 'Bearer '+jwt,
