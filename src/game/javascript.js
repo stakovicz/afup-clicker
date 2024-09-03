@@ -45,11 +45,13 @@ window.addEventListener("load", (event) => {
         }
     }
     const onclick = (event) => {
-        event.preventDefault();
         publish({click: team});
         move(step, $button);
     }
-    $button.addEventListener("touchstart", onclick);
+    $button.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        onclick(e);
+    });
     $button.addEventListener("mousedown", onclick);
 
     async function publish(data) {
