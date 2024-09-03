@@ -44,12 +44,13 @@ window.addEventListener("load", (event) => {
             const points = data[team];
         }
     }
-
-    $button.addEventListener("click", (event) => {
+    const onclick = (event) => {
         event.preventDefault();
         publish({click: team});
         move(step, $button);
-    });
+    }
+    $button.addEventListener("touchstart", onclick);
+    $button.addEventListener("mousedown", onclick);
 
     async function publish(data) {
         const body = new URLSearchParams({

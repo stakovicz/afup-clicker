@@ -7,13 +7,76 @@
 </head>
 <body>
 <div class="buttons">
-    <button id="button">
+    <button id="button" class="">
         <img src="../images/raclette.svg" alt="">
     </button>
 </div>
-<link href="../common.css" rel="stylesheet" />
-<link href="style.css" rel="stylesheet" />
+<script>
+    const touchHandler = (ev) => {
+        ev.preventDefault() // Prevent text selection
+    }
+    //document.addEventListener('touchstart', touchHandler, {passive:false})
+    document.addEventListener('touchmove', touchHandler, {passive:false})
+    document.addEventListener('touchend', touchHandler, {passive:false})
+    document.addEventListener('touchcancel', touchHandler, {passive:false})
+</script>
+<style>
+
+    html {
+        background-color: #FFF;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        -webkit-user-select: text !important;
+        user-select: text !important;
+    }
+    body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    #button {
+        padding: 0;
+        margin: 0;
+        width: 150px;
+        height: 150px;
+        background: transparent;
+        user-select: none;
+        touch-action: none;
+        border: none
+    }
+    #button:active {
+        scale: 0.98;
+        opacity: 0.7;
+    }
+
+
+    .move {
+        position: absolute;
+        top: 0;
+        offset-path: path("M77.1105368,338.343412 C77.1105368,388.941426 199.897942,411.927712 237.110564,359.243889 C274.323186,306.560067 207.011067,267.799059 157.27123,224.190036 C107.531394,180.581013 77.1105368,196.935011 77.1105368,132.497805 C77.1105368,68.0605983 179.509372,51.0876737 223.858988,102.165674 C264.278335,148.717136 192.778808,169.864999 157.27123,216.111252 C113.538244,273.070552 77.1105368,288.596882 77.1105368,338.343412 Z");
+        animation: 15s linear infinite running move;
+        offset-rotate: auto 90deg;
+        offset-anchor: center center;
+        inset: 0;
+    }
+
+    @keyframes move {
+        0% {
+            offset-distance: 0;
+        }
+        100% {
+            offset-distance: 100%;
+        }
+    }
+
+</style>
 <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
-<script src="javascript.js"></script>
+<script src="javascript.js?d=b"></script>
 </body>
 </html>
