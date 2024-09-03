@@ -44,15 +44,17 @@ window.addEventListener("load", (event) => {
             const points = data[team];
         }
     }
-    const onclick = (event) => {
+
+    const userAgent = window.navigator.userAgent;
+    const preventDefault = userAgent.match(/iPad/i) || userAgent.match(/iPhone/i);
+
+    $button.addEventListener("touchstart", (e) => {
+        if (preventDefault) {
+            e.preventDefault();
+        }
         publish({click: team});
         move(step, $button);
-    }
-    $button.addEventListener("touchstart", (e) => {
-        e.preventDefault();
-        onclick(e);
     });
-    $button.addEventListener("mousedown", onclick);
 
     async function publish(data) {
         const body = new URLSearchParams({
