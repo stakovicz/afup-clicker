@@ -39,6 +39,9 @@ document.onkeyup = function(evt) {
     if (evt.code === 'KeyI') {
         window.location = '/intro/';
     }
+    if (evt.code === 'KeyR') {
+        window.location.reload();
+    }
 };
 
 
