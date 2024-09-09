@@ -109,7 +109,7 @@ function celebrate(who)  {
 
     const $winner = document.getElementById('winner');
     $winner.append($img);
-    $winner.style.backgroundColor = '#FFF';
+    $winner.style.backgroundColor = '#000';
     const end = Date.now() + 15 * 1000;
 
     (function frame() {
