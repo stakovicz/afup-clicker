@@ -59,6 +59,38 @@
         #potato img,
         #cheese img {
             width: 70%;
+            animation: 500ms ease-in-out infinite running heartbeat;
+        }
+        #potato img {
+            animation-delay: 200ms;
+        }
+
+        @keyframes heartbeat
+        {
+            0%
+            {
+                transform: rotate( 0deg );
+            }
+            20%
+            {
+                transform: rotate( 1deg );
+            }
+            40%
+            {
+                transform: rotate( 0deg );
+            }
+            60%
+            {
+                transform: rotate( 1deg );
+            }
+            80%
+            {
+                transform: rotate( 1deg );
+            }
+            100%
+            {
+                transform: rotate( 0deg );
+            }
         }
     </style>
 </body>
