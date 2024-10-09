@@ -6,7 +6,7 @@ var qrcode = new QRCode("qrcode", {
 });
 let url  = window.location.origin+'/choose/';
 qrcode.makeCode(url);
-document.querySelector('#url').innerText = url;
+document.querySelector('#url').innerText = 'https://bit.ly/forumphp2024';
 
 document.onkeyup = function(evt) {
     if (evt.code === 'KeyN') {
